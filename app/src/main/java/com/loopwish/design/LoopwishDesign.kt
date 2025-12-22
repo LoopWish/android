@@ -1,13 +1,13 @@
 package com.loopwish.design
 
 import android.content.Context
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.foundation.isSystemInDarkTheme
 import org.json.JSONObject
 
 enum class LoopwishTheme {
@@ -37,34 +37,35 @@ enum class LoopwishColorRole(val key: String) {
 }
 
 @Composable
-fun LoopwishTheme(content: @Composable () -> Unit) {
+fun loopwishTheme(content: @Composable () -> Unit) {
     val darkTheme = isSystemInDarkTheme()
     val theme = if (darkTheme) LoopwishTheme.Dark else LoopwishTheme.Light
 
     val context = LocalContext.current
     val design = LoopwishDesign.fromAssets(context)
 
-    val scheme = if (darkTheme) {
-        darkColorScheme(
-            primary = design.color(LoopwishColorRole.ActionPrimaryBackground, theme),
-            secondary = design.color(LoopwishColorRole.ActionSecondaryForeground, theme),
-            background = design.color(LoopwishColorRole.SurfaceCanvas, theme),
-            surface = design.color(LoopwishColorRole.SurfaceElevated, theme),
-            onPrimary = design.color(LoopwishColorRole.ActionPrimaryForeground, theme),
-            onSurface = design.color(LoopwishColorRole.TextPrimary, theme),
-            outline = design.color(LoopwishColorRole.BorderDefault, theme),
-        )
-    } else {
-        lightColorScheme(
-            primary = design.color(LoopwishColorRole.ActionPrimaryBackground, theme),
-            secondary = design.color(LoopwishColorRole.ActionSecondaryForeground, theme),
-            background = design.color(LoopwishColorRole.SurfaceCanvas, theme),
-            surface = design.color(LoopwishColorRole.SurfaceElevated, theme),
-            onPrimary = design.color(LoopwishColorRole.ActionPrimaryForeground, theme),
-            onSurface = design.color(LoopwishColorRole.TextPrimary, theme),
-            outline = design.color(LoopwishColorRole.BorderDefault, theme),
-        )
-    }
+    val scheme =
+        if (darkTheme) {
+            darkColorScheme(
+                primary = design.color(LoopwishColorRole.ActionPrimaryBackground, theme),
+                secondary = design.color(LoopwishColorRole.ActionSecondaryForeground, theme),
+                background = design.color(LoopwishColorRole.SurfaceCanvas, theme),
+                surface = design.color(LoopwishColorRole.SurfaceElevated, theme),
+                onPrimary = design.color(LoopwishColorRole.ActionPrimaryForeground, theme),
+                onSurface = design.color(LoopwishColorRole.TextPrimary, theme),
+                outline = design.color(LoopwishColorRole.BorderDefault, theme),
+            )
+        } else {
+            lightColorScheme(
+                primary = design.color(LoopwishColorRole.ActionPrimaryBackground, theme),
+                secondary = design.color(LoopwishColorRole.ActionSecondaryForeground, theme),
+                background = design.color(LoopwishColorRole.SurfaceCanvas, theme),
+                surface = design.color(LoopwishColorRole.SurfaceElevated, theme),
+                onPrimary = design.color(LoopwishColorRole.ActionPrimaryForeground, theme),
+                onSurface = design.color(LoopwishColorRole.TextPrimary, theme),
+                outline = design.color(LoopwishColorRole.BorderDefault, theme),
+            )
+        }
 
     MaterialTheme(
         colorScheme = scheme,
@@ -78,17 +79,24 @@ class LoopwishDesign private constructor(
     private val semanticDark: Map<String, String>,
     val tagline: String,
 ) {
-    fun hex(role: LoopwishColorRole, theme: LoopwishTheme): String {
-        val raw = when (theme) {
-            LoopwishTheme.Light -> semanticLight[role.key]
-            LoopwishTheme.Dark -> semanticDark[role.key]
-        }
+    fun hex(
+        role: LoopwishColorRole,
+        theme: LoopwishTheme,
+    ): String {
+        val raw =
+            when (theme) {
+                LoopwishTheme.Light -> semanticLight[role.key]
+                LoopwishTheme.Dark -> semanticDark[role.key]
+            }
 
         val resolved = raw?.let { resolveTokenValue(it) }
         return resolved ?: defaultHex(role)
     }
 
-    fun color(role: LoopwishColorRole, theme: LoopwishTheme): Color {
+    fun color(
+        role: LoopwishColorRole,
+        theme: LoopwishTheme,
+    ): Color {
         return Color(parseHexToArgb(hex(role, theme)))
     }
 
@@ -136,7 +144,10 @@ class LoopwishDesign private constructor(
             ).also { cached = it }
         }
 
-        private fun readAssetText(context: Context, path: String): String {
+        private fun readAssetText(
+            context: Context,
+            path: String,
+        ): String {
             context.assets.open(path).use { input ->
                 return input.bufferedReader().readText()
             }
