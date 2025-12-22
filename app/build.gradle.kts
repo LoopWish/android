@@ -7,6 +7,12 @@ android {
     namespace = "com.loopwish"
     compileSdk = 34
 
+    sourceSets {
+        getByName("main") {
+            assets.srcDirs("src/main/assets", "../vendor/shared")
+        }
+    }
+
     defaultConfig {
         applicationId = "com.loopwish"
         minSdk = 26

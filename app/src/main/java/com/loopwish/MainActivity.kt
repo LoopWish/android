@@ -13,7 +13,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.loopwish.design.LoopwishDesign
+import com.loopwish.design.loopwishTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,8 +29,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun loopwishApp() {
-    MaterialTheme {
+    loopwishTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
+            val design = LoopwishDesign.fromAssets(LocalContext.current)
             Column(
                 modifier =
                     Modifier
@@ -37,7 +41,10 @@ fun loopwishApp() {
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(text = "Loopwish", style = MaterialTheme.typography.headlineMedium)
-                Text(text = "Ønsk. Del. Få. Sammen.", style = MaterialTheme.typography.bodyLarge)
+                Text(
+                    text = design.tagline,
+                    style = MaterialTheme.typography.bodyLarge,
+                )
             }
         }
     }
