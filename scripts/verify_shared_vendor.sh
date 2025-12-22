@@ -42,6 +42,8 @@ FILES=(
   "design-tokens/tokens.json"
   "assets/logos/loopwish-logo.svg"
   "assets/logos/loopwish-banner.svg"
+  "assets/logos/loopwish-logo.png"
+  "assets/logos/loopwish-banner.png"
 )
 
 for rel in "${FILES[@]}"; do
