@@ -12,6 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Verify vendored shared artifacts (warn)
+        run: bash ./scripts/verify_shared_vendor.sh
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
